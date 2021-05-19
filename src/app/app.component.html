@@ -1,0 +1,91 @@
+<h1>Drag&Drop with a flex-wrap</h1>
+
+<button (click)="add()">Add</button> <button (click)="shuffle()">Shuffle</button><br/>
+<ul class="example-list">
+  <li *ngFor="let item of this.Alldata[0].pages">{{ item }}</li>
+</ul>
+
+
+
+<div style="border:2px solid black" cdkDropListGroup>
+
+
+
+
+  <div class="example-container" cdkDropListGroup>
+
+    <div>
+
+      <div cdkDropList (cdkDropListDropped)="drop()" #placeholder>
+
+      </div>
+
+      <div cdkDropList *ngFor="let item of this.Alldata[0].pages" [cdkDropListEnterPredicate]="enter"
+        (cdkDropListDropped)="drop()">
+
+
+        <div cdkDrag class="example-box">{{item}}</div>
+
+
+      </div>
+
+    </div>  
+
+
+  </div>
+
+
+</div>
+
+
+
+
+<div cdkDropListGroup>
+  <div cdkDropList #parentlist="cdkDropList" [cdkDropListData]="Alldata" class="example-container"
+    (cdkDropListDropped)="drop($event)">
+
+
+    <div style="border:2px solid black" cdkDrag [id]="i+1" *ngFor="let item of Alldata;let i=index">
+
+      <!-- handler  -->
+      <!-- <pre>{{item |json}}</pre> -->
+      <div class="example-handle" cdkDragHandle>
+        <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+          <path
+            d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+          </path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div>
+
+
+      <h3>{{item.name}}</h3>
+
+      <div cdkDropListGroup>
+        <div cdkDropList [id]="i+1" #Alllist="cdkDropList" [cdkDropListEnterPredicate]="enter"
+          [cdkDropListData]="item.pages" [cdkDropListConnectedTo]="finallist" class="example-list"
+          (cdkDropListDropped)="drop($event)">
+
+
+
+
+          <div class="example-box" [id]="j+1" *ngFor="let page of item.pages;let j=index" cdkDrag
+            (cdkDragMoved)="dragMoved($event,page,item);">
+            {{page}}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+
+
+</div>
